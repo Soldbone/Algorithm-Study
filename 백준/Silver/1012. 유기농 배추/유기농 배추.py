@@ -1,9 +1,9 @@
 # 유기농 배추
 # 이번에도 풀이를 보긴 했지만 내 아이디어로 구현했다.
-# [Improve] 배추를 담든 자료형을 set으로 변경해봤다. remove -> discard : O(N) -> O(1)
+# skan006님 풀이를 보고 성능 향상을 시켜봤다.
+# list.remove()가 성능 저하의 큰 원인이었다.
 
 import sys
-from collections import deque
 input = sys.stdin.readline
 
 # 1697(숨바꼭질)에서 사용했던 bfs 코드 참고함
@@ -13,14 +13,14 @@ def bfs(napa_cabbage_coord: set):
     # dy = [1, 0, -1, 0]
     directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
 
-    q = deque([napa_cabbage_coord.pop()])
-    while q:
-        x, y = q.popleft()
+    s = [napa_cabbage_coord.pop()]
+    while s:
+        x, y = s.pop()
     
         for dx, dy in directions:
             nx, ny = x+dx, y+dy
             if (nx, ny) in napa_cabbage_coord:
-                q.append((nx, ny))
+                s.append((nx, ny))
                 napa_cabbage_coord.discard((nx, ny))
 
 T = int(input())
