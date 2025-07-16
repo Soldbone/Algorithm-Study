@@ -18,27 +18,21 @@ def dfs(color, x, y):
 N = int(input().rstrip())
 graph = [ list(input()) for _ in range(N) ]
 
-non_blind_count_rg = 0
-count_b = 0
-blind_count_rg = 0
-
+cnt = {'R':0, 'G':0, 'B':0}
 for i in range(N):
     for j in range(N):
         curr = graph[i][j]
         if curr not in "OX":
-            if curr in "RG":
-                graph[i][j] = 'O'
-                non_blind_count_rg += 1
-            else:
-                graph[i][j] = 'X'
-                count_b += 1
+            graph[i][j] = 'O' if curr in "RG" else 'X'
+            cnt[curr] += 1
             dfs(curr, i, j)
 
+cnt_o = 0
 for i in range(N):
     for j in range(N):
         if graph[i][j] == 'O':
-            blind_count_rg += 1
+            cnt_o += 1
             dfs('O', i, j)
 
 
-print(non_blind_count_rg + count_b, blind_count_rg + count_b)
+print(sum(cnt.values()), cnt_o + cnt['B'])
