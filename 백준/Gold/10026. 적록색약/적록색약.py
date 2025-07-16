@@ -1,51 +1,44 @@
 # 적록색약
-# [REF] https://velog.io/@nyc326/Python-백준-10026번-적록색약-BFS
-
+# [REF] good1588님 제출
 import sys
-from collections import deque
 input = sys.stdin.readline
 
-# BFS 함수 정의
-def bfs(graph, start, visited):
-    queue = deque([start])
-    x, y = start
-    visited[x][y] = 1
-
+def dfs(color, x, y):
+    stk = [(x, y)]
     directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
-    while queue:
-        x, y = queue.popleft()
-        
-        curr_value = graph[x][y]
+    while stk:
+        x, y = stk.pop()
         for dx, dy in directions:
             nx, ny = x + dx, y + dy
-            if ( (0 <= nx < N) and (0 <= ny < N) ) and (graph[nx][ny] == curr_value) and not visited[nx][ny]:
-                queue.append((nx, ny))
-                visited[nx][ny] = 1
+            if ( 0 <= nx < N and 0 <= ny < N ) and (graph[nx][ny] == color):
+                graph[nx][ny] = 'O' if graph[nx][ny] in "RG" else 'X'
+                stk.append((nx, ny))
 
+# Input
 N = int(input().rstrip())
 graph = [ list(input()) for _ in range(N) ]
 
-visited = [ [0] * N for _ in range(N) ]
-non_blind_count, rg_blind_count = 0, 0
+non_blind_count_rg = 0
+count_b = 0
+blind_count_rg = 0
 
-# Non Color Blind
 for i in range(N):
     for j in range(N):
-        if not visited[i][j]:
-            bfs(graph, (i, j), visited)
-            non_blind_count += 1
+        curr = graph[i][j]
+        if curr not in "OX":
+            if curr in "RG":
+                graph[i][j] = 'O'
+                non_blind_count_rg += 1
+            else:
+                graph[i][j] = 'X'
+                count_b += 1
+            dfs(curr, i, j)
 
-# RG Color Blind
 for i in range(N):
     for j in range(N):
-        if graph[i][j] == "R":
-            graph[i][j] = "G"
+        if graph[i][j] == 'O':
+            blind_count_rg += 1
+            dfs('O', i, j)
 
-visited = [ [0] * N for _ in range(N) ]
-for i in range(N):
-    for j in range(N):
-        if not visited[i][j]:
-            bfs(graph, (i, j), visited)
-            rg_blind_count += 1
 
-print(non_blind_count, rg_blind_count)
+print(non_blind_count_rg + count_b, blind_count_rg + count_b)
