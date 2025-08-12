@@ -7,9 +7,7 @@ input = sys.stdin.readline
 dp = [0] * 11
 
 # initialize
-dp[1] = 1
-dp[2] = 2
-dp[3] = 4
+dp[1:4] = [1,2,4]
 
 # bottom-up DP w/ max()
 for i in range(4, 11):
