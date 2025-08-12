@@ -1,9 +1,6 @@
 # 1, 2, 3 더하기
 
 # 입력
-import sys
-input = sys.stdin.readline
-
 dp = [0] * 11
 
 # initialize
