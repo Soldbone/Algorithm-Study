@@ -1,4 +1,6 @@
 # 사이클 게임 (유니온 파인드)
+import sys
+input = sys.stdin.readline
 
 def union(a: int, b: int) -> None:
     a = find(a)
