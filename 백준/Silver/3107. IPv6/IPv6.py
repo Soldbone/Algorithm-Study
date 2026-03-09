@@ -26,4 +26,4 @@ if "::" in compressed_ipv6:
 else:
     groups = compressed_ipv6.split(":")
 
-print(":".join([group.zfill(4) for group in groups]))
+print(":".join(group.zfill(4) for group in groups))
