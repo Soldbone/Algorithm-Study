@@ -1,8 +1,7 @@
 from collections import deque
 
 N = int(input())
-cards = [i for i in range(1, N + 1)]
-deck = deque(cards)
+deck = deque(range(1, N + 1))
 
 while N > 1:
     deck.popleft()
