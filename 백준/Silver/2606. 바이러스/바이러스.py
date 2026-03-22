@@ -1,28 +1,26 @@
-from collections import deque
+import sys
 
-num_of_v = int(input())
-num_of_edge = int(input())
+input = sys.stdin.readline
 
-graph = [ [] for _ in range(num_of_v+1)]
-for _ in range(num_of_edge):
-    m, n = list(map(int, input().split()))
-    graph[m].append(n)
-    graph[n].append(m)
+num_com = int(input())
+num_com_in_net = int(input())
 
-visited = [False] * (num_of_v+1)
-def bfs(graph, start, visited):
-    queue = deque([start])
-    visited[start] = True
-    count = -1 # except first node
+graph = [[] for _ in range(num_com + 1)]
+visited = [False] * (num_com + 1)
+for _ in range(num_com_in_net):
+    src, dest = map(int, input().split())
+    graph[src].append(dest)
+    graph[dest].append(src)
 
-    while queue:
-        v = queue.popleft()
-        # print(v, end=' ')
-        count += 1
-        for i in graph[v]:
-            if not visited[i]:
-                queue.append(i)
-                visited[i] = True
-    return count
+count = 0
+def dfs(graph, node, visited):
+    global count
+    visited[node] = True
 
-print(bfs(graph, 1, visited))
+    for neighbor in graph[node]:
+        if not visited[neighbor]:
+            count += 1
+            dfs(graph, neighbor, visited)
+
+dfs(graph, 1, visited)
+print(count)
