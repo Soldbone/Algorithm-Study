@@ -1,43 +1,33 @@
-from collections import deque
 import sys
+from collections import deque
 
-n = int(sys.stdin.readline().rstrip())
+input = sys.stdin.readline
 
-graph = [ [] for _ in range(n+1)]
-for _ in range(n-1):
-    x, y = list(map(int, sys.stdin.readline().split()))
-    graph[x].append(y)
-    graph[y].append(x)
+N = int(input())
+graph = [[] for _ in range(N + 1)]
+visited = [False for _ in range(N + 1)]
+for _ in range(N - 1):
+    src, dest = map(int, input().split())
+    graph[src].append(dest)
+    graph[dest].append(src)
 
-visited = [False] * (n+1)
-result = {}
-# def dfs(graph, v, visited):
-#     stack = [v]
-#     visited[v] = True
-#     while stack:
-#         value = stack.pop()
-#         if not visited[value]:
-#             visited[value] = True
-#         for j in graph[value]:
-#             if not visited[j]:
-#                 result[j] = value
-#                 stack.append(j)
+parents = [-1 for _ in range(N + 1)]
 
-def bfs(graph, start, visited):
-    queue = deque([start])
-    visited[start] = True
-    
-    while queue:
-        v = queue.popleft()
-        # print(v, end=' ')
-        for i in graph[v]:
-            if not visited[i]:
-                result[i] = v
-                queue.append(i)
-                visited[i] = True
+# while문의 종료 조건을 어떻게 해야 하나? visited는 필요한가?
+# 뭔가 별도의 counter를 두어야 하나?
 
+count = 0
+queue = deque([1])
+visited[1] = True
+while queue:
+    i = queue.popleft()
+    for neighbor in graph[i]:
+        # 차례대로 보게 되는데, 1의 neighbor는 무조건 자식이다. 자식들의 parents[] 정보에 1을 적어준다.
+        # 1의 neighbor와 연결된 노드는 무조건 자식이다.
+        if not visited[neighbor]:
+            parents[neighbor] = i
+            visited[neighbor] = True
+            queue.append(neighbor)
 
-# dfs(graph, 1, visited)
-bfs(graph, 1, visited)
-for i in range(2, n+1):
-    print(result[i])
+for i in range(2, N + 1):
+    print(parents[i])
