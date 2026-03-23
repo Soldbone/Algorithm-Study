@@ -1,26 +1,33 @@
-N = int(input())
-board = [list(map(int, input().split())) for _ in range(N)]
+from collections import deque
+import sys
 
-visited = [[False] * N for _ in range(N)]
+input = sys.stdin.readline
 
+n = int(input())
+board = [list(map(int, input().split())) for _ in range(n)]
 
-def dfs(x, y):
-    if x >= N or y >= N:
-        return False
+visited = [[False] * n for _ in range(n)]
+queue = deque([(0, 0)])
+visited[0][0] = True
 
-    if visited[x][y]:
-        return False
+# r(ow), c(olumn)
+while queue:
+    r, c = queue.popleft()
 
-    if board[x][y] == -1:
-        return True
+    if board[r][c] == -1:
+        print("HaruHaru")
+        break
 
-    visited[x][y] = True
-    jump = board[x][y]
+    jump = board[r][c]
 
-    if jump == 0:
-        return False
+    nr, nc = r + jump, c
+    if 0 <= nr < n and 0 <= nc < n and not visited[nr][nc]:
+        visited[nr][nc] = True
+        queue.append((nr, nc))
 
-    return dfs(x + jump, y) or dfs(x, y + jump)
-
-
-print("HaruHaru" if dfs(0, 0) else "Hing")
+    nr, nc = r, c + jump
+    if 0 <= nr < n and 0 <= nc < n and not visited[nr][nc]:
+        visited[nr][nc] = True
+        queue.append((nr, nc))
+else:
+    print("Hing")
