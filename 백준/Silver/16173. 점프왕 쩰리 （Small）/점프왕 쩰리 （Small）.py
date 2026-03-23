@@ -1,30 +1,34 @@
-# DFS 개선 ver2. w/ ChatGPT
-N = int(input())
-board = [list(map(int, input().split())) for _ in range(N)]
+### BFS - 벡터 개념 사용해보기
+from collections import deque
+import sys
 
-visited = [[False] * N for _ in range(N)]
+input = sys.stdin.readline
 
-def dfs(x, y):
-    if visited[x][y]:
-        return False
+n = int(input())
+board = [list(map(int, input().split())) for _ in range(n)]
 
-    if board[x][y] == -1:
-        return True
+visited = [[False] * n for _ in range(n)]
+queue = deque([(0, 0)])
+visited[0][0] = True
 
-    visited[x][y] = True
-    jump = board[x][y]
+# r(ow), c(olumn)
+while queue:
+    r, c = queue.popleft()
 
-    if jump == 0:
-        return False
+    if board[r][c] == -1:
+        print("HaruHaru")
+        break
 
-    nx = x + jump
-    ny = y + jump
+    jump = board[r][c]
 
-    if nx < N and dfs(nx, y):
-        return True
-    if ny < N and dfs(x, ny):
-        return True
+    # 오른쪽, 아래
+    moves = [(0, jump), (jump, 0)]
 
-    return False
-
-print("HaruHaru" if dfs(0, 0) else "Hing")
+    for move in moves:
+        dr, dc = move
+        nr, nc = r + dr, c + dc
+        if nr < n and nc < n and not visited[nr][nc]:
+            visited[nr][nc] = True
+            queue.append((nr, nc))
+else:
+    print("Hing")
