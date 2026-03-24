@@ -18,7 +18,7 @@ n = len(preorder)
 result = []
 
 
-def build(lower, upper):
+def build(upper):
     global idx
 
     if idx >= n:
@@ -26,14 +26,14 @@ def build(lower, upper):
 
     value = preorder[idx]
 
-    if not (lower < value < upper):
+    if not (value < upper):
         return
 
     idx += 1
-    build(lower, value)  # 왼쪽
-    build(value, upper)  # 오른쪽
+    build(value)  # 왼쪽
+    build(upper)  # 오른쪽
     result.append(value)  # 후위 순회
 
 
-build(float("-inf"), float("inf"))
+build(float("inf"))
 print("\n".join(map(str, result)))
